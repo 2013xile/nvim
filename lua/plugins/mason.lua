@@ -1,44 +1,40 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
+-- if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
 -- Customize Mason plugins
 ---@type LazySpec
 return {
-  -- use mason-lspconfig to configure LSP installations
   {
-    "williamboman/mason-lspconfig.nvim",
-    -- overrides `require("mason-lspconfig").setup(...)`
-    opts = function(_, opts)
-      -- add more things to the ensure_installed table protecting against community packs modifying it
-      opts.ensure_installed = require("astronvim.utils").list_insert_unique(
-                                  opts.ensure_installed, {
-            "lua_ls", "clangd", "cmake", "cssls", "dotls", "dockerls", "gopls",
-            "html", "jsonls", "yamlls", "marksman", "sqlls", "pyright",
-            "tailwindcss", "tsserver", "eslint", "golangci_lint_ls",
-            "clojure_lsp"
-          })
-    end
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    opts = {
+      ensure_installed = {
+        -- LSP servers（注意替换名称为 mason 中的标准名称）
+        "lua-language-server", -- lua_ls => lua-language-server
+        "clangd",
+        "cmake-language-server",
+        "css-lsp", -- cssls => css-lsp
+        "dot-language-server", -- dotls => dot-language-server
+        "dockerfile-language-server", -- dockerls => dockerfile-language-server
+        "gopls",
+        "html-lsp", -- html => html-lsp
+        "json-lsp", -- jsonls => json-lsp
+        "yaml-language-server", -- yamlls => yaml-language-server
+        "marksman",
+        "sqls", -- sqlls => sql-language-server
+        "pyright",
+        "tailwindcss-language-server", -- tailwindcss => tailwindcss-language-server
+        "typescript-language-server", -- tsserver => typescript-language-server
+        "eslint_d", -- eslint@4.8.0 => eslint_d（mason 不支持指定版本）
+        "golangci-lint-langserver", -- golangci_lint_ls => golangci-lint-langserver
+        "clojure-lsp",
+
+        -- null-ls sources (格式化器/诊断)
+        "prettier",
+        "stylua",
+
+        -- DAP 调试器
+        "debugpy",
+      },
+      auto_update = true,
+      run_on_start = true,
+    },
   },
-  -- use mason-null-ls to configure Formatters/Linter installation for null-ls sources
-  {
-    "jay-babu/mason-null-ls.nvim",
-    -- overrides `require("mason-null-ls").setup(...)`
-    opts = function(_, opts)
-      -- add more things to the ensure_installed table protecting against community packs modifying it
-      opts.ensure_installed = require("astrocore").list_insert_unique(
-                                  opts.ensure_installed, {
-            "prettier", "stylua"
-            -- add more arguments for adding more null-ls sources
-          })
-    end
-  }, {
-    "jay-babu/mason-nvim-dap.nvim",
-    -- overrides `require("mason-nvim-dap").setup(...)`
-    opts = function(_, opts)
-      -- add more things to the ensure_installed table protecting against community packs modifying it
-      opts.ensure_installed = require("astrocore").list_insert_unique(
-                                  opts.ensure_installed, {
-            "python"
-            -- add more arguments for adding more debuggers
-          })
-    end
-  }
 }
