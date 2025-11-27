@@ -10,15 +10,15 @@ return {
   opts = {
     -- Configure core features of AstroNvim
     features = {
-      large_buf = {size = 1024 * 500, lines = 10000}, -- set global limits for large files for disabling features like treesitter
+      large_buf = { size = 1024 * 500, lines = 10000 }, -- set global limits for large files for disabling features like treesitter
       autopairs = true, -- enable autopairs at start
       cmp = true, -- enable completion at start
       diagnostics_mode = 3, -- diagnostic mode on start (0 = off, 1 = no signs/virtual text, 2 = no virtual text, 3 = on)
       highlighturl = true, -- highlight URLs at start
-      notifications = true -- enable notifications at start
+      notifications = true, -- enable notifications at start
     },
     -- Diagnostics configuration (for vim.diagnostics.config({...})) when diagnostics are on
-    diagnostics = {virtual_text = true, underline = true},
+    diagnostics = { virtual_text = true, underline = true },
     -- vim options can be configured here
     options = {
       opt = { -- vim.opt.<key>
@@ -26,13 +26,13 @@ return {
         number = true, -- sets vim.opt.number
         spell = false, -- sets vim.opt.spell
         signcolumn = "auto", -- sets vim.opt.signcolumn to auto
-        wrap = false -- sets vim.opt.wrap
+        wrap = false, -- sets vim.opt.wrap
       },
       g = { -- vim.g.<key>
         -- configure global vim variables (vim.g)
         -- NOTE: `mapleader` and `maplocalleader` must be set in the AstroNvim opts or before `lazy.setup`
         -- This can be found in the `lua/lazy_setup.lua` file
-      }
+      },
     },
     -- Mappings can be configured through AstroCore as well.
     -- NOTE: keycodes follow the casing in the vimdocs. For example, `<Leader>` must be capitalized
@@ -54,35 +54,51 @@ return {
         -- mappings seen under group name "Buffer"
         ["<Leader>bD"] = {
           function()
-            require("astroui.status.heirline").buffer_picker(function(bufnr)
-              require("astrocore.buffer").close(bufnr)
-            end)
+            require("astroui.status.heirline").buffer_picker(
+              function(bufnr) require("astrocore.buffer").close(bufnr) end
+            )
           end,
-          desc = "Pick to close"
+          desc = "Pick to close",
         },
         -- tables with just a `desc` key will be registered with which-key if it's installed
         -- this is useful for naming menus
-        ["<Leader>b"] = {desc = "Buffers"},
+        ["<Leader>b"] = { desc = "Buffers" },
         -- quick save
         -- ["<C-s>"] = { ":w!<cr>", desc = "Save File" },  -- change description but the same command
         -- paste image
         ["<leader>P"] = {
           '<cmd>lua require"clipboard-image.paste".paste_img()<cr>',
-          desc = "Paste image"
+          desc = "Paste image",
         },
         -- quick save
-        ["<D-s>"] = {":w!<cr>", desc = "Save File"}, -- change description but the same command
+        ["<D-s>"] = { ":w!<cr>", desc = "Save File" }, -- change description but the same command
         -- neotest
-        ["<leader>T"] = {name = "test"},
-        ["<leader>Tj"] = {
-          '<cmd>lua require("jester").run()<cr>',
-          desc = "Run jest"
-        }
+        ["<leader>T"] = { name = "test" },
+        ["<leader>Tt"] = {
+          '<cmd>lua require("neotest").run.run()<cr>',
+          desc = "Run nearest test",
+        },
+        ["<leader>Tf"] = {
+          '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>',
+          desc = "Run all tests in file",
+        },
+        ["<leader>To"] = {
+          '<cmd>lua require("neotest").output.open({ enter = true })<cr>',
+          desc = "Show test output",
+        },
+        ["<leader>TO"] = {
+          '<cmd>lua require("neotest").output_panel.toggle()<cr>',
+          desc = "Toggle output panel",
+        },
+        ["<leader>Ts"] = {
+          '<cmd>lua require("neotest").summary.toggle()<cr>',
+          desc = "Toggle test summary",
+        },
       },
       t = {
         -- setting a mapping to false will disable it
         -- ["<esc>"] = false,
       },
-    }
-  }
+    },
+  },
 }

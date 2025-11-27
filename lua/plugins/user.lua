@@ -79,10 +79,10 @@ return {
       },
     },
   },
-  {
-    "David-Kunz/jester",
-    config = function() require("jester").setup { cmd = "yarn test -t '$result' -- $file" } end,
-  },
+  -- {
+  --   "David-Kunz/jester",
+  --   config = function() require("jester").setup { cmd = "yarn test -t '$result' -- $file" } end,
+  -- },
   {
     "iamcco/markdown-preview.nvim",
     build = "cd app && npm install",
@@ -97,5 +97,25 @@ return {
       }
     end,
   },
-  { "nvim-neotest/nvim-nio" },
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "marilari88/neotest-vitest",
+    },
+    config = function()
+      require("neotest").setup {
+        adapters = {
+          require "neotest-vitest" {
+            vitestCommand = "yarn test --",
+            vitestArgs = {},
+            cwd = function(path) return vim.fn.getcwd() end,
+          },
+        },
+      }
+    end,
+  },
 }
